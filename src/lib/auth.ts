@@ -1,10 +1,10 @@
 const API_URL = "http://localhost:5000/api/auth";
 
-export type SessionUser = {
+export interface SessionUser {
   id: number;
   name: string;
   email: string;
-};
+}
 
 const USER_KEY = "resumely.user";
 const TOKEN_KEY = "resumely.token";
@@ -38,7 +38,7 @@ export async function register(
   localStorage.setItem(TOKEN_KEY, data.token);
   localStorage.setItem(USER_KEY, JSON.stringify(data.user));
 
-  return data;
+  return data.user;
 }
 
 // =======================
@@ -68,40 +68,46 @@ export async function login(
   localStorage.setItem(TOKEN_KEY, data.token);
   localStorage.setItem(USER_KEY, JSON.stringify(data.user));
 
-  return data;
+  return data.user;
 }
 
 // =======================
-// Get Current User
+// Current User
 // =======================
 export function getUser(): SessionUser | null {
   if (typeof window === "undefined") return null;
 
-  const user = localStorage.getItem(USER_KEY);
+  const raw = localStorage.getItem(USER_KEY);
 
-  if (!user) return null;
+  if (!raw) return null;
 
-  return JSON.parse(user);
+  try {
+    return JSON.parse(raw) as SessionUser;
+  } catch {
+    return null;
+  }
 }
 
 // =======================
-// Get JWT Token
+// JWT Token
 // =======================
-export function getToken() {
-  return localStorage.getItem(TOKEN_KEY);
+export function getToken(): string {
+  if (typeof window === "undefined") return "";
+
+  return localStorage.getItem(TOKEN_KEY) || "";
+}
+
+// =======================
+// Logged In?
+// =======================
+export function isLoggedIn(): boolean {
+  return getToken() !== "";
 }
 
 // =======================
 // Logout
 // =======================
-export function signOut() {
+export function signOut(): void {
   localStorage.removeItem(USER_KEY);
   localStorage.removeItem(TOKEN_KEY);
-}
-
-// =======================
-// Check Login
-// =======================
-export function isLoggedIn() {
-  return !!localStorage.getItem(TOKEN_KEY);
 }
