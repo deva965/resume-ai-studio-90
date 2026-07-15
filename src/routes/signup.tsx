@@ -22,7 +22,6 @@ function SignupPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [loading, setLoading] = useState(false);
 
   const submit = async (e: React.FormEvent) => {
@@ -38,7 +37,6 @@ function SignupPage() {
       navigate({
         to: "/dashboard",
       });
-
     } catch (err: any) {
       toast.error(err.message || "Registration failed");
     } finally {
@@ -52,7 +50,6 @@ function SignupPage() {
 
       <main className="mx-auto flex max-w-md flex-col justify-center px-6 py-16">
         <Card className="border-border/60 p-8 shadow-elegant">
-
           <h1 className="text-2xl font-bold">
             Create your account
           </h1>
@@ -62,11 +59,8 @@ function SignupPage() {
           </p>
 
           <form onSubmit={submit} className="mt-6 space-y-4">
-
             <div className="space-y-1.5">
-              <Label htmlFor="name">
-                Full Name
-              </Label>
+              <Label htmlFor="name">Full Name</Label>
 
               <Input
                 id="name"
@@ -78,9 +72,7 @@ function SignupPage() {
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="email">
-                Email
-              </Label>
+              <Label htmlFor="email">Email</Label>
 
               <Input
                 id="email"
@@ -93,9 +85,7 @@ function SignupPage() {
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="password">
-                Password
-              </Label>
+              <Label htmlFor="password">Password</Label>
 
               <Input
                 id="password"
@@ -114,7 +104,6 @@ function SignupPage() {
             >
               {loading ? "Creating Account..." : "Create Account"}
             </Button>
-
           </form>
 
           <p className="mt-6 text-center text-sm text-muted-foreground">
@@ -126,7 +115,6 @@ function SignupPage() {
               Sign In
             </Link>
           </p>
-
         </Card>
       </main>
 

@@ -37,7 +37,6 @@ function LoginPage() {
       navigate({
         to: "/dashboard",
       });
-
     } catch (err: any) {
       toast.error(err.message || "Login failed");
     } finally {
@@ -51,7 +50,6 @@ function LoginPage() {
 
       <main className="mx-auto flex max-w-md flex-col justify-center px-6 py-16">
         <Card className="border-border/60 p-8 shadow-elegant">
-
           <h1 className="text-2xl font-bold">
             Welcome back
           </h1>
@@ -61,7 +59,6 @@ function LoginPage() {
           </p>
 
           <form onSubmit={submit} className="mt-6 space-y-4">
-
             <div className="space-y-1.5">
               <Label htmlFor="email">
                 Email
@@ -99,7 +96,6 @@ function LoginPage() {
             >
               {loading ? "Signing in..." : "Sign In"}
             </Button>
-
           </form>
 
           <p className="mt-6 text-center text-sm text-muted-foreground">
@@ -111,7 +107,6 @@ function LoginPage() {
               Create one
             </Link>
           </p>
-
         </Card>
       </main>
 

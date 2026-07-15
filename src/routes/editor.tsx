@@ -32,31 +32,56 @@ function EditorPage() {
   const [resume, setResume] = useState<Resume>(() => emptyResume());
 
   useEffect(() => {
-    if (!hydrated) return;
+  if (!hydrated) return;
+
+  async function loadResume() {
     if (!id) {
-      const r = create();
-      navigate({ to: "/editor", search: { id: r.id }, replace: true });
+      const created = await create(emptyResume());
+
+      navigate({
+        to: "/editor",
+        search: {
+          id: created.id,
+        },
+        replace: true,
+      });
+
       return;
     }
-    const found = get(id);
-    if (found) setResume(found);
-  }, [hydrated, id]);
 
+    const found = get(id);
+
+    if (found) {
+      setResume(found);
+    }
+  }
+
+  loadResume();
+}, [hydrated, id]);
   // Persist on change (debounced)
   useEffect(() => {
     if (!hydrated || !id) return;
-    const t = setTimeout(() => update(id, resume), 300);
-    return () => clearTimeout(t);
-  }, [resume, hydrated, id, update]);
+
+    const t = setTimeout(() => {
+    update(resume);
+  }, 300);
+
+  return () => clearTimeout(t);
+}, [resume]);
 
   const patch = (p: Partial<Resume>) => setResume((r) => ({ ...r, ...p }));
   const patchPersonal = (p: Partial<Resume["personal"]>) =>
     setResume((r) => ({ ...r, personal: { ...r.personal, ...p } }));
 
   const download = () => {
-    toast.message("Opening print dialog", { description: "Choose 'Save as PDF'." });
-    setTimeout(() => window.print(), 200);
-  };
+  toast.success("Preparing your resume...", {
+    description: "The print dialog will open. Choose 'Save as PDF'.",
+  });
+
+  setTimeout(() => {
+    window.print();
+  }, 500);
+};
 
   return (
     <div className="min-h-screen">
@@ -120,11 +145,7 @@ function EditorPage() {
                 <Card className="border-border/60 p-6">
                   <div className="mb-2 flex items-center justify-between">
                     <Label>Professional summary</Label>
-                    <AIGenerateButton
-                      section="summary"
-                      resume={resume}
-                      onResult={(t) => patch({ summary: t })}
-                    />
+                    
                   </div>
                   <Textarea
                     rows={6}

@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000/api/auth";
+const API_URL = "https://resume-ai-studio-90-1.onrender.com/api/auth";
 
 export interface SessionUser {
   id: number;
